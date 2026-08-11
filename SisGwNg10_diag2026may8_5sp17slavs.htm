@@ -1,0 +1,61 @@
+<!--SisGwNG_diag2025oc22 tnhan@enersev  ,initial-scale=1.0"overflow:hidden;-->
+<!doctype html><html><head><title>SisGwNG_MbRtuSlaves_diag2026may</title><meta charset='utf-8'><!--meta name="viewport" content="width=device-width"-->
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" /><meta http-equiv="Expires" content="-1" />
+<style>body{font-family:consolas;margin:1px 1px 1px 1px;background:lightgray;}
+div{margin:2px 2px 2px 2px;padding:2px 2px 2px 2px;}
+.dvSP{background:white;}
+table,td{border:1px solid gray;border-collapse:collapse;padding:3px;}</style></head><body oncontextmenu='return false;' onload='upds();'>
+<div style='width:1600px;height:1000px;border:1px solid gray;margin:1px 1px 1px 1px;padding:1px 1px 1px 1px;'><b> SEfrance SisGwNG MbRtuSlaves diagnostic</b> (c)2026may <b>ENERSEV</b>
+<div style='display:flex;'><div id='dvsp1'  class='dvSP'>sp1</div> <div id='dvsp2'  class='dvSP'>sp2</div> <div id='dvsp3'  class='dvSP'>sp3</div> <div id='dvsp4'  class='dvSP'>sp4</div></div>
+<div style='display:flex;'><div id='dvsp5'  class='dvSP'>sp5</div> <div id='dvsp6'  class='dvSP'>sp6</div> <div id='dvsp7'  class='dvSP'>sp7</div> <div id='dvsp8'  class='dvSP'>sp8</div></div>
+<div style='display:flex;'><div id='dvsp9'  class='dvSP'>sp9</div> <div id='dvsp10' class='dvSP'>sp10</div><div id='dvsp11' class='dvSP'>sp11</div><div id='dvsp12' class='dvSP'>sp12</div></div>
+<div style='display:flex;'><div id='dvsp13' class='dvSP'>sp13</div><div id='dvsp14' class='dvSP'>sp14</div><div id='dvsp15' class='dvSP'>sp15</div><div id='dvsp16' class='dvSP'>sp16</div></div></div>
+<!--table id=tbQs style='position:absolute;left:4px;top:400px;text-align:center;font-family:Consolas;opacity:0.9;'>
+    <tr><td class='tdRWp'>Q(m3)nt</td><td class='tdCWp'>Q(m3)ns</td><td class='tdTAp'>Q(m3)ta</td><td class='tdBPY'>Q(m3)fa</td><td class='tdBPY'>Q(m3)py</td></tr>
+    <tr><td class='tdRWp'>- - - </td><td class='tdCWp'>- - - </td><td class='tdTAp'>- - - </td><td class='tdBPY'>- - - </td><td class='tdBPY'>- - - </td></tr>
+    <tr style='font-weight:bold;'>
+        <td class='tdRWp'>- - -</td><td class='tdCWp'>- - -</td><td class='tdTAp'>- - -</td><td class='tdBPY'>- - -</td><td class='tdBPY'>- - -</td></tr>
+    <tr><td class='tdRWp'>- - -</td><td class='tdCWp'>- - -</td><td class='tdTAp'>- - -</td><td class='tdBPY'>- - -</td><td class='tdBPY'>- - -</td></tr></table-->
+<!--textarea id="taPsRtHs" readonly style='position:absolute;left:1350px;top:30px;width:563px;height:460px;background:lightgray;white-space:nowrap;font-family:Consolas;font-size:x-small;overflow:hidden;'></textarea-->
+</body><script>var jnRs=[];
+sDiag=[];   sDiag[0]="Reqs w/o answer=";
+            sDiag[1]="Bad CRC . . . .=";
+            sDiag[2]="Exchange w/oErr=";
+function dt2ys(d){var s,m,e;s=d.getFullYear();m=d.getMonth()+1;if(m<10)s+='0'+m;else s+=''+m;e=d.getDate();if(e<10)s+='0'+e;else s+=''+e;return s;}
+function dp2fn(d,p){return 'SisGwNG_port'+p+'.txt'}//return dt2ys(d)+'_SisGwNG_MbSlaves_port'+p+'.txt';}
+function csv2jn(csv){var i,j,s,hs,res=[],Ls=csv.split("\n");s=Ls[0];hs=s.split(",");//s=s.substring(0,s.length-1);
+    for(i=1;i<Ls.length;i++){var o={};s=Ls[i].split(",");for(j=0;j<hs.length;j++){o[hs[j]]=s[j];} res.push(o);} return res;}    
+function hms2tims(hms){return hms.substring(8,10)+':'+hms.substring(10,12)+':'+hms.substring(12,14)}
+function mbRtuSlaveStatus(id,ad){var s="id"+id+" slave"+ad+" ",r,rr=jnRs.length-1;
+    if(0<rr){for(r=rr-1;0<=r;r--){if(ad==jnRs[r]['Slav']){s+=jnRs[r]['status'];break;}} return s;}}
+function spDiagUpd(sp,ids,slavs){var rr=jnRs.length-1;if(rr<1)return;
+    var s="<u>port<b>"+sp+"</b></u> "+hms2tims(jnRs[rr-1]['hhmmss'])+"<br>";
+    s+=sDiag[0]+jnRs[rr-1]['noAns']+"<br>";
+    s+=sDiag[1]+jnRs[rr-1]['crc']  +"<br>";
+    s+=sDiag[2]+jnRs[rr-1]['noErr']+"<br>";
+    var i,n=slavs.length;for(i=0;i<n;i++)s+=mbRtuSlaveStatus(ids[i],slavs[i])+"<br>";
+    dv=document.getElementById('dvsp'+sp);dv.innerHTML=s;}
+async function rLogCsv(dt,sp){var fn=dp2fn(dt,sp);console.log(fn);jnRs=[]
+    await fetch(fn,{headers:{'Access-Control-Allow-Origin':'*','Cache-Control':'no-store','Pragma':'no-cache'}})
+    .then(r=>r.text()).then(csv=>{jnRs=csv2jn(csv);return jnRs;}).catch(e=>{console.error('ERRfetchCSVfile:',e);});}//jnRs[nn]['DateTime']
+async function spMbRtuSlaves_diag(){var sp,dv;
+    sp=1; await rLogCsv(new Date(),sp);spDiagUpd(sp,[ 1, 2, 3, 4, 5],   [10,11,12,13,14]);//console.log(jnRs.length);console.log(jnRs);
+    sp=2; await rLogCsv(new Date(),sp);spDiagUpd(sp,[ 6, 7, 8, 9,10],   [20,21,22,23,24]);
+    sp=3; await rLogCsv(new Date(),sp);spDiagUpd(sp,[11,12,13,14],      [30,31,32,33]);
+    sp=4; await rLogCsv(new Date(),sp);spDiagUpd(sp,[15],               [40]);
+    sp=5; await rLogCsv(new Date(),sp);spDiagUpd(sp,[16,17],            [50,51]);}
+    //sp=6; await rLogCsv(new Date(),sp);spDiagUpd(sp,[30],                  [60]);
+    //sp=7; await rLogCsv(new Date(),sp);spDiagUpd(sp,[31,32,33,34],         [70,71,72,73]);
+    //sp=8; await rLogCsv(new Date(),sp);spDiagUpd(sp,[35],                  [80]);
+    //sp=9; await rLogCsv(new Date(),sp);spDiagUpd(sp,[36,37],               [90,91]);
+    //sp=10;await rLogCsv(new Date(),sp);spDiagUpd(sp,[44,66,67,68,69,70],   [91,92,93,94,95,96]);
+    //sp=11;await rLogCsv(new Date(),sp);spDiagUpd(sp,[38,39],               [100,101]);}
+    //sp=12;await rLogCsv(new Date(),sp);spDiagUpd(sp,[46,76,77,78,79,80],   [93,94,95,96,97,98]);
+    //sp=13;await rLogCsv(new Date(),sp);spDiagUpd(sp,[47,81,82,83,84,85],   [94,95,96,97,98,99]);
+    //sp=14;await rLogCsv(new Date(),sp);spDiagUpd(sp,[48,86,87,88,89,90],   [95,96,97,98,99,100]);
+    //sp=15;await rLogCsv(new Date(),sp);spDiagUpd(sp,[49,91,92,93,94,95],   [160,161,162,163,164,165]);
+    //sp=16;await rLogCsv(new Date(),sp);spDiagUpd(sp,[50,51,52,53,96,97],   [1,2,3,4,5,6]);}
+function upds(){setInterval(spMbRtuSlaves_diag,1000);}
+</script></html>
